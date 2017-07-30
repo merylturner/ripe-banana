@@ -31,16 +31,16 @@ describe('Review Model unit tests', () => {
         const review = new Review();
         return review.validate()
             .then(
-            () => { throw new Error('Expected validation error'); },
-            ({ errors }) => {
-                assert.ok(errors.rating.kind);
-                assert.ok(errors.reviewer.kind);
-                assert.ok(errors.review.kind);
-                assert.ok(errors.film.kind);
-
-            });
+                () => { throw new Error('Expected validation error'); },
+                ({ errors }) => {
+                    assert.ok(errors.rating.kind);
+                    assert.ok(errors.reviewer.kind);
+                    assert.ok(errors.review.kind);
+                    assert.ok(errors.film.kind);
+                });
     });
-    it('should be an enum type', () => {
+
+    it('should be of Number type', () => {
         const reviewer = new Reviewer({ name: 'Marty Baller', company: 'Balling Corporation' });
         const film = new Film({
             title: 'Finding Nemo',
@@ -53,7 +53,7 @@ describe('Review Model unit tests', () => {
             ]
         });
         const review = new Review({
-            rating: 2,
+            rating: 'fake',
             reviewer: reviewer._id,
             review: 'It was aight!!!!',
             film: film._id,
@@ -62,9 +62,35 @@ describe('Review Model unit tests', () => {
         });
         return review.validate()
             .then(
-            () => { throw new Error('Expected validation error'); },
-            ({ errors }) => {
-                assert.equal(errors.rating.kind, 'enum');
-            });
+                () => { throw new Error('Expected validation error'); },
+                ({ errors }) => assert.equal(errors.rating.kind, 'Number')
+            );
+    });
+
+    it('Rating should be between 1 and 5', () => {
+        const reviewer = new Reviewer({ name: 'Marty Baller', company: 'Balling Corporation' });
+        const film = new Film({
+            title: 'Finding Nemo',
+            studio: '123456789009876543211234',
+            released: 2003,
+            cast: [
+                { role: 'Nemo', actor: '123456789098765432123456' },
+                { role: 'Dory', actor: '123456789098765432123456' },
+                { role: 'Marlin', actor: '123456789098765432123456' }
+            ]
+        });
+        const review = new Review({
+            rating: 10,
+            reviewer: reviewer._id,
+            review: 'It was aight!!!!',
+            film: film._id,
+            createdAt: new Date,
+            updatedAt: new Date
+        });
+        return review.validate()
+            .then(
+                () => { throw new Error('Expected validation error'); },
+                ({ errors }) => assert.equal(errors.rating.kind, 'max')
+            );
     });
 });
