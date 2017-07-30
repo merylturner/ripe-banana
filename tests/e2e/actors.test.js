@@ -42,7 +42,6 @@ describe('actors REST api', () => {
         return request.post('/actors')
             .send(actor)
             .then(({ body }) => {
-                console.log('body is', body);
                 actor._id = body._id;
                 actor.__v = body.__v;
                 return body;
@@ -50,6 +49,7 @@ describe('actors REST api', () => {
     }
 
     it('saves an actor', () => {
+        console.log(saveActor(amyPoehler));
         return saveActor(amyPoehler)
             .then(savedActor => {
                 console.log('savedActor is', savedActor);
