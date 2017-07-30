@@ -25,17 +25,17 @@ describe('actors REST api', () => {
         pob: 'Newton'
     };
 
-    // let willSmith = {
-    //     name: 'Will Smith',
-    //     dob: new Date(1968, 9, 25),
-    //     pob: 'Philadelphia'
-    // };
+    let willSmith = {
+        name: 'Will Smith',
+        dob: new Date(1968, 9, 25),
+        pob: 'Philadelphia'
+    };
 
-    // let bryanCranston = {
-    //     name: 'Bryan Cranston',
-    //     dob: new Date(1956, 3, 7),
-    //     pob: 'Los Angeles'
-    // };
+    let bryanCranston = {
+        name: 'Bryan Cranston',
+        dob: new Date(1956, 3, 7),
+        pob: 'Los Angeles'
+    };
 
     function saveActor(actor) {
         // actor.film = film._id;
@@ -49,13 +49,20 @@ describe('actors REST api', () => {
     }
 
     it('saves an actor', () => {
-        console.log(saveActor(amyPoehler));
         return saveActor(amyPoehler)
             .then(savedActor => {
                 console.log('savedActor is', savedActor);
                 assert.ok(savedActor._id);
-                assert.deepEqual(savedActor, amyPoehler);
+                assert.deepEqual(savedActor.name, amyPoehler.name);
             });
+    });
 
+    it('gets an actor if they exist', () => {
+        return request
+            .get(`/actors/${amyPoehler._id}`)
+            .then(res => res.body)
+            .then(actor => {
+                assert.equal(actor, amyPoehler);
+            });
     });
 });
