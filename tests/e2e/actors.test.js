@@ -57,7 +57,7 @@ describe('actors REST api', () => {
             });
     });
 
-    it('gets an actor if they exist', () => {
+    it.skip('gets an actor if they exist', () => {
         return request
             .get(`/actors/${amyPoehler._id}`)
             .then(res => res.body)
@@ -75,6 +75,18 @@ describe('actors REST api', () => {
             },
             ({ response }) => {
                 assert.ok(response.notFound);
+            });
+    });
+
+    it('gets ALL the actors', () => {
+        return Promise.all([
+            saveActor(willSmith),
+            saveActor(bryanCranston)
+        ])
+            .then(() => request.get('/actors'))
+            .then(res => {
+                const actors = [res.body[0].name, res.body[1].name, res.body[2].name];
+                assert.deepEqual(actors, [amyPoehler.name, willSmith.name, bryanCranston.name]);
             });
     });
 });
