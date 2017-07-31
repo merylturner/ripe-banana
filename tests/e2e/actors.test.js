@@ -61,7 +61,9 @@ describe('actors REST api', () => {
     it('saves an actor', () => {
         return saveActor(amyPoehler)
             .then(savedActor => {
+                console.log('when we save an actor',savedActor);
                 assert.ok(savedActor._id);
+                assert.ok(savedActor.dob);
                 assert.deepEqual(savedActor.name, amyPoehler.name);
             });
     });
@@ -71,10 +73,9 @@ describe('actors REST api', () => {
             .get(`/actors/${amyPoehler._id}`)
             .then(res => res.body)
             .then(actor => {
-                //NEED TO FIX DATE OF BIRTH FORMAT
-                console.log('actor dob is', actor.dob);
-                console.log('amy poehler date', new Date(1971, 9, 16));
-                assert.deepEqual(actor.name, amyPoehler.name);
+                console.log('when we get the actor', actor);
+                actor.dob = actor.dob.toISOString();
+                assert.deepEqual(actor, amyPoehler);
             });
     });
 

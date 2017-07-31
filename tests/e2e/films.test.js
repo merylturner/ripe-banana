@@ -1,18 +1,18 @@
-const chai = require('chai');
-const assert = chai.assert;
-const chaiHttp = require('chai-http');
-chai.use(chaiHttp);
+// const chai = require('chai');
+// const assert = chai.assert;
+// const chaiHttp = require('chai-http');
+// chai.use(chaiHttp);
 
-process.env.MONGODB_URI = 'mongodb://localhost:27017/films-test';
+// process.env.MONGODB_URI = 'mongodb://localhost:27017/films-test';
 
-require('../../lib/connect');
+// require('../../lib/connect');
 
-const connection = require('mongoose').connection;
+// const connection = require('mongoose').connection;
 
-const app = require('../../lib/app');
-const request = chai.request(app);
+// const app = require('../../lib/app');
+// const request = chai.request(app);
 
 
-describe('actors REST api', () => {
+// describe('actors REST api', () => {
 
-});
+// });
