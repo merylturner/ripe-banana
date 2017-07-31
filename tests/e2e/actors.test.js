@@ -89,4 +89,12 @@ describe('actors REST api', () => {
                 assert.deepEqual(actors, [amyPoehler.name, willSmith.name, bryanCranston.name]);
             });
     });
+
+    it('deletes an actor by its id', () => {
+        return request.delete(`/actors/${willSmith._id}`)
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, {removed: true});
+            });
+    });
 });
