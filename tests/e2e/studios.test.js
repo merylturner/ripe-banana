@@ -104,8 +104,8 @@ describe('studios REST api', () => {
             .send(marvel)
             .then(res => res.body)
             .then(studio => {
-                assert.equal(warner.name, marvel.name);
-                assert.equal(warner.address, marvel.address);
+                assert.deepEqual(studio.name, marvel.name);
+                assert.deepEqual(studio.address, marvel.address);
             });
     });
 
