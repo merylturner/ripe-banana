@@ -52,7 +52,11 @@ describe('REST API for reviewers', () => {
     it('GETs a reviewer if exists', () => {
         return request.get(`/reviewers/${siskel._id}`)
             .then(res => res.body)
-            .then(reviewer => assert.deepEqual(reviewer, siskel)
+            .then(reviewer => {
+                assert.deepEqual(reviewer.name, siskel.name);
+                assert.deepEqual(reviewer.company, siskel.company);
+                assert.ok(reviewer.reviews);
+            }
             );
     });
 
