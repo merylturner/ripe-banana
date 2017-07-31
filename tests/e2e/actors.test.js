@@ -62,7 +62,19 @@ describe('actors REST api', () => {
             .get(`/actors/${amyPoehler._id}`)
             .then(res => res.body)
             .then(actor => {
-                assert.equal(actor, amyPoehler);
+                console.log('actor is', actor);
+                assert.deepEqual(actor, amyPoehler);
+            });
+    });
+
+    it('returns 404 if actor does not exist', () => {
+        return request
+            .get('/actors/657483838485868788909878')
+            .then(() => {
+                throw new Error('successful status code not expected');
+            },
+            ({ response }) => {
+                assert.ok(response.notFound);
             });
     });
 });
