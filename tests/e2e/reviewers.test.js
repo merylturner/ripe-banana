@@ -41,20 +41,33 @@ describe('REST API for reviewers', () => {
             });
     }
 
-    xit('GETs a reviewer if exists', () => {
-
+    it('saves a reviewer', () => {
+        return saveReviewer(siskel)
+            .then(savedRev => {
+                assert.ok(savedRev._id);
+                assert.deepEqual(savedRev, siskel);
+            });
+    });
+    
+    it('GETs a reviewer if exists', () => {
         return request.get(`/reviewers/${siskel._id}`)
             .then(res => res.body)
-            .then(reviewer => {
-                console.log('reviewer is', reviewer);
-                assert.deepEqual(reviewer, siskel);
-            }
+            .then(reviewer => assert.deepEqual(reviewer, siskel)
+            );
+    });
+
+    it('returns 404 if tries to GET reviewer not existing', () => {
+        return request.get('/reviewers/123412345567898765466676')
+            .then(() => { throw new Error('received 200 code when expected 404'); },
+                ({ response }) => {
+                    assert.ok(response.notFound);
+                    assert.ok(response.error);
+                }
             );
     });
 
     it('GETs all reviewers', () => {
         return Promise.all([
-            saveReviewer(siskel),
             saveReviewer(ebert),
             saveReviewer(nice),
         ])
@@ -64,7 +77,7 @@ describe('REST API for reviewers', () => {
                     else if(a.name < b.name) return -1;
                     else return 0;
                 });
-                assert.deepEqual(reviewers, [ebert, nice, siskel]);
+                assert.deepEqual(reviewers, [ebert, nice]);
             });
     });
 
