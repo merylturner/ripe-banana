@@ -58,8 +58,8 @@ describe('studios REST api', () => {
         return request.get(`/studios/${warner._id}`)
             .then(res => res.body)
             .then(studio => {
-                assert.equal(studio.name, warner.name);
-                assert.equal(studio.address, warner.address);
+                assert.deepEqual(studio.name, warner.name);
+                assert.deepEqual(studio.address, warner.address);
             });
     });
 
