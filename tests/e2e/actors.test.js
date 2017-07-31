@@ -62,7 +62,6 @@ describe('actors REST api', () => {
             .get(`/actors/${amyPoehler._id}`)
             .then(res => res.body)
             .then(actor => {
-                console.log('actor is', actor);
                 assert.deepEqual(actor, amyPoehler);
             });
     });
@@ -90,11 +89,31 @@ describe('actors REST api', () => {
             });
     });
 
-    it('deletes an actor by its id', () => {
+    it('deletes an actor by id', () => {
         return request.delete(`/actors/${willSmith._id}`)
             .then(res => {
                 const message = JSON.parse(res.text);
                 assert.deepEqual(message, {removed: true});
+            });
+    });
+
+    it('returns 404 when deleting an actor that does not exist' , () => {
+        return request.delete('/actors/657483838485868788909878')
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, {removed: false});
+            });
+    });
+
+    it('updates an existing actor by id', () => {
+        return request.put(`/actors/${amyPoehler._id}`)
+            .send({ pob: 'New York City'})
+            .then(() => {
+                return request.get(`/actors/${amyPoehler._id}`);
+            })
+            .then(res => {
+                const updatedActor = res.body;
+                assert.equal(updatedActor.pob, 'New York City');
             });
     });
 });
