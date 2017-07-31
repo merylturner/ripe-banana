@@ -89,7 +89,7 @@ describe('studios REST api', () => {
             });
     });
 
-    it('Replaces studio content', () => {
+    it.only('Replaces studio content', () => {
         const marvel = {
             name: 'Marvel Studios',
             address: {
@@ -101,15 +101,15 @@ describe('studios REST api', () => {
 
         return request
             .put(`/studios/${warner._id}`)
-            .send(marverl)
+            .send(marvel)
             .then(res => res.body)
             .then(studio => {
                 assert.equal(warner.name, marvel.name);
-                assert.equal(warner.location, marvel.location);
+                assert.equal(warner.address, marvel.address);
             });
     });
 
-    it('deletes an studio by id', () => {
+    it.only('deletes an studio by id', () => {
         return request
             .delete(`/studios/${warner._id}`)
             .then(res => {
