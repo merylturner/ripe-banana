@@ -16,6 +16,14 @@ const request = chai.request(app);
 describe('films REST api', () => {
     before(() => connection.dropDatabase());
 
+    // let studio = null;
+    // before(() => {
+    //     return request.post('/studios')
+    //         .send({ name: 'Some Studio' })
+    //         .then(res => res.body)
+    //         .then(savedStudio => studio = savedStudio);
+    // });
+
     const wonderWoman = {
         title: 'Wonder Woman',
         studio: '857465768885558399423345',
@@ -50,6 +58,7 @@ describe('films REST api', () => {
     };
 
     function saveFilm(film) {
+        // film.studio = studio._id;
         return request.post('/films')
             .send(film)
             .then(({ body }) => {
@@ -66,6 +75,12 @@ describe('films REST api', () => {
                 assert.ok(savedFilm._id);
                 assert.deepEqual(savedFilm, wonderWoman);
             });
+    });
+
+    it('GETs a film by id', () => {
+        return request.get(`/films/${wonderWoman._id}`)
+            .then(res => res.body)
+            .then(film => assert.deepEqual(film, wonderWoman));
     });
 
     it('GETS all films', () => {
