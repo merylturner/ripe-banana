@@ -17,7 +17,7 @@ describe('actors REST api', () => {
 
     before(() => connection.dropDatabase());
 
-    let film = null;
+    // let film = null;
 
     // before(() => {
     //     return request.post('/films')
