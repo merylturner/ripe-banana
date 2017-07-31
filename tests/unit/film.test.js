@@ -28,7 +28,7 @@ describe('Film model unit tests', () => {
         return film.validate()
             .then(() => { throw new Error('expected validation error'); },
                 ({ errors }) => {
-                //TODO: Cast array property  
+                //TODO: Cast array property 
                     assert.ok(errors.title.kind);
                     assert.ok(errors.released.kind);
                     assert.ok(errors.studio.kind);
