@@ -63,7 +63,7 @@ describe('studios REST api', () => {
             });
     });
 
-    it('returns 404 if otter does not exist', () => {
+    it.only('returns 404 if otter does not exist', () => {
         return request.get('/studios/58ff9f496aafd447111c29b5')
             .then(
             () => {
