@@ -67,4 +67,19 @@ describe('films REST api', () => {
                 assert.deepEqual(savedFilm, wonderWoman);
             });
     });
+
+    it('GETS all films', () => {
+        return Promise.all([
+            saveFilm(spaceBalls),
+            saveFilm(princessBride)
+        ])
+            .then(res => {
+                const films = res.sort((a,b) => {
+                    if(a.title < b.title) return 1;
+                    else if (a.title >b.title) return -1;
+                    else return 0;
+                });
+                assert.deepEqual(films, [princessBride, spaceBalls]);
+            });
+    });
 });
