@@ -19,8 +19,7 @@ describe('Reviewer Model unit tests', () => {
                 ({ errors }) => {
                     assert.equal(errors.name.kind, 'required');
                     assert.equal(errors.company.kind, 'required');
-                    assert.ok(errors.name);
-                    assert.ok(errors.company);
+                    assert.ok(errors.company && errors.name);
                 }
             );
     });
