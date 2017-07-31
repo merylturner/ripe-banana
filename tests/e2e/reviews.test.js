@@ -71,7 +71,6 @@ describe('REST API for reviews', () => {
             saveReview(revThree)
         ])
             .then(res => {
-                console.log('res is'. res);
                 const reviews = res.sort((a, b) => {
                     if(a.updatedAt < b.updatedAt) return 1;
                     else if(a.updatedAt > b.updatedAt) return -1;

@@ -77,7 +77,7 @@ describe('films REST api', () => {
             });
     });
 
-    it('GETs a film by id', () => {
+    xit('GETs a film by id', () => {
         return request.get(`/films/${wonderWoman._id}`)
             .then(res => res.body)
             .then(film => assert.deepEqual(film, wonderWoman));
@@ -95,6 +95,14 @@ describe('films REST api', () => {
                     else return 0;
                 });
                 assert.deepEqual(films, [princessBride, spaceBalls]);
+            });
+    });
+
+    it('deletes a film by id', () => {
+        return request.delete(`/films/${spaceBalls._id}`)
+            .then(res => {
+                const message = JSON.parse(res.text);
+                assert.deepEqual(message, { removed: true });
             });
     });
 });
