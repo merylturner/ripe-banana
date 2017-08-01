@@ -1,12 +1,18 @@
-const db = require('./_db');
 const chai = require('chai');
-const request = require('./_request');
-const { assert } = require('chai');
+const assert = chai.assert;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
+process.env.MONGODB_URL = 'mongodb://localhost:27017/bananas-test';
+require('../../lib/connect');
+
+const connection = require('mongoose').connection;
+const app = require('../../lib/app');
+const request = chai.request(app);
+
 describe('studios REST api', () => {
-    before(db.drop);
+    
+    before(() => connection.dropDatabase());
 
     const warner = {
         name: 'Warner Bros Studios',
