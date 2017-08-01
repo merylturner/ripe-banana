@@ -102,18 +102,14 @@ describe('actors REST api', () => {
 
     it('deletes an actor by id', () => {
         return request.delete(`/actors/${willSmith._id}`)
-            .then(res => {
-                const message = JSON.parse(res.text);
-                assert.deepEqual(message, { removed: true });
-            });
+            .then(res => assert.deepEqual(res.body, { removed: true })
+            );
     });
 
     it('returns 404 when deleting an actor that does not exist', () => {
         return request.delete('/actors/657483838485868788909878')
-            .then(res => {
-                const message = JSON.parse(res.text);
-                assert.deepEqual(message, { removed: false });
-            });
+            .then(res => assert.deepEqual(res.body, { removed: false })
+            );
     });
 
     it('updates an existing actor by id', () => {

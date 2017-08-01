@@ -100,9 +100,19 @@ describe('films REST api', () => {
 
     it('deletes a film by id', () => {
         return request.delete(`/films/${spaceBalls._id}`)
-            .then(res => {
-                const message = JSON.parse(res.text);
-                assert.deepEqual(message, { removed: true });
-            });
+            .then(res => assert.deepEqual(res.body, { removed: true })
+            );
+    });
+
+    it('returns 404 if film not there', () => {
+        return request.delete(`/films/${spaceBalls._id}`)
+            .then(res => assert.deepEqual(res.body, { removed: false })
+            );
+    });
+
+    it('updates a film by id', () => {
+        return request.patch(`/films/${princessBride._id}`)
+            .send({ title: 'Princess Pride' })
+            .then(res => assert.equal(res.body.title, 'Princess Pride'));
     });
 });
