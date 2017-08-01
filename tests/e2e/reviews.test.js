@@ -18,27 +18,21 @@ describe('REST API for reviews', () => {
         rating: 3,
         reviewer: '123412345567898765466676',
         review: 'It was okay. Could have been better. Oh well.',
-        film: '123412345567898765466676',
-        createdAt: new Date,
-        updatedAt: new Date
+        film: '123412345567898765466676'
     };
 
     const revTwo = {
         rating: 4,
         reviewer: '123412345567898765466676',
         review: 'Yay!',
-        film: '123412345567898765466676',
-        createdAt: new Date,
-        updatedAt: new Date
+        film: '123412345567898765466676'
     };
 
     const revThree = {
         rating: 1,
         reviewer: '123412345567898765466676',
         review: 'Blarg.',
-        film: '123412345567898765466676',
-        createdAt: new Date,
-        updatedAt: new Date
+        film: '123412345567898765466676'
     };
 
     function saveReview(review) {
