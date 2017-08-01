@@ -16,6 +16,14 @@ const request = chai.request(app);
 describe('films REST api', () => {
     before(() => connection.dropDatabase());
 
+    // before(() => {
+    //     return saveActor(george)
+    //         .then(savedActor => {
+    //             wonderWoman.cast[0].actor = savedActor._id;
+    //             console.log('george is: ', george._id, 'wonderWoman.cast etc is', wonderWoman.cast[0].actor);
+    //         });
+    // });
+
     let studio = null;
     before(() => {
         return request.post('/studios')
@@ -24,36 +32,42 @@ describe('films REST api', () => {
             .then(savedStudio => studio = savedStudio);
     });
 
+    const revOne = {
+        rating: 3,
+        reviewer: '123412345567898765466676',
+        review: 'It was okay. Could have been better. Oh well.',
+        film: '123412345567898765466676',
+        createdAt: new Date,
+        updatedAt: new Date
+    };
+
+    // const george = {
+    //     name: 'George Clooney',
+    //     dob: new Date('1980, 4, 1'),
+    //     pob: 'Portland, OR'
+    // };
+
     const wonderWoman = {
         title: 'Wonder Woman',
-        studio: '857465768885558399423345',
         released: 2017,
         cast: [
-            { role: 'Wonder Woman', actor: '857465768885558399423345' },
-            { role: 'Steve Trevor', actor: '857465768885558399423345' },
-            { role: 'Antiope', actor: '857465768885558399423345' }
+            { role: 'Wonder Woman'}
         ]
     };
 
     const spaceBalls = {
         title: 'Space Balls',
-        studio: '857465768885558399423345',
         released: 1980,
         cast: [
-            { role: 'Yogurt', actor: '857465768885558399423345' },
-            { role: 'Dark Helmet', actor: '857465768885558399423345' },
-            { role: 'Barf', actor: '857465768885558399423345' }
+            { role: 'Yogurt', actor: '857465768885558399423345' }
         ]
     };
 
     const princessBride = {
         title: 'The Princess Bride',
-        studio: '657575758855775645354545',
         released: 1985,
         cast: [
-            { role: 'Wesley', actor: '857465768885558399423345' },
-            { role: 'Buttercup', actor: '857465768885558399423345' },
-            { role: 'Inigo', actor: '857465768885558399423345' }
+            { role: 'Wesley', actor: '857465768885558399423345' }
         ]
     };
 
@@ -68,6 +82,15 @@ describe('films REST api', () => {
                 return body;
             });
     }
+
+    // function saveActor(actor) {
+    //     return request.post('/actors')
+    //         .send(actor)
+    //         .then(({ body }) => {
+    //             actor._id = body._id;
+    //             return body;
+    //         });
+    // }
 
     it('saves a film', () => {
         return saveFilm(wonderWoman)
@@ -84,7 +107,7 @@ describe('films REST api', () => {
                 assert.equal(film.title, 'Wonder Woman');
                 assert.equal(film.released, wonderWoman.released);
                 assert.equal(film.studio.name, 'Warner Bros Studios');
-                assert.include(film.cast[0].actor, 'Gal Gadot');
+                assert.include(film.cast[0].actor.name, 'Gal Gadot');
             
             });
     });

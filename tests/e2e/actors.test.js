@@ -3,6 +3,9 @@ const assert = chai.assert;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
+const Actor = require('../../lib/models/actor');
+const Studio = require('../../lib/models/studio');
+
 process.env.MONGODB_URI = 'mongodb://localhost:27017/actors-test';
 
 require('../../lib/connect');
@@ -16,26 +19,6 @@ const request = chai.request(app);
 describe('actors REST api', () => {
 
     before(() => connection.dropDatabase());
-
-    // let film = null;
-    // before(() => {
-    //     return request.post('/films')
-    //         .send(
-    //             { title: 'Mean Girls' },
-    //             { studio: '123456789012345678901234' },
-    //             { released: 2001 },
-    //             { cast: [
-    //                 { role: 'Wonder Woman', actor: '857465768885558399423345' },
-    //                 { role: 'Steve Trevor', actor: '857465768885558399423345' },
-    //                 { role: 'Antiope', actor: '857465768885558399423345' }
-    //             ]}
-    //         )
-    //         .then(res => res.body)
-    //         .then(savedFilm => {
-    //             console.log('saved film is', savedFilm);
-    //             film = savedFilm;
-    //         }); 
-    // });
 
     let amyPoehler = {
         name: 'Amy Poehler',
@@ -55,8 +38,32 @@ describe('actors REST api', () => {
         pob: 'Los Angeles'
     };
 
+    let meanGirls = {
+        title: 'Mean Girls',
+        studio: Studio._id,
+        released: 2001,
+        cast: [
+            { role: 'Wonder Woman', actor: Actor._id },
+            { role: 'Steve Trevor', actor: Actor._id },
+            { role: 'Antiope', actor: Actor._id }
+        ]
+    };
+    
+    let film = null;
+    before(() => {
+        return request.post('/films')
+            .send(
+            )
+            .then(res => res.body)
+            .then(savedFilm => {
+                console.log('saved film is', savedFilm);
+                film = savedFilm;
+            }); 
+    });
+
+
     function saveActor(actor) {
-        // actor.film = film._id;
+        actor.film = film._id;
         return request.post('/actors')
             .send(actor)
             .then(({ body }) => {
