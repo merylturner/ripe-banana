@@ -16,13 +16,13 @@ const request = chai.request(app);
 describe('films REST api', () => {
     before(() => connection.dropDatabase());
 
-    // let studio = null;
-    // before(() => {
-    //     return request.post('/studios')
-    //         .send({ name: 'Some Studio' })
-    //         .then(res => res.body)
-    //         .then(savedStudio => studio = savedStudio);
-    // });
+    let studio = null;
+    before(() => {
+        return request.post('/studios')
+            .send({ name: 'Warner Bros Studios' })
+            .then(res => res.body)
+            .then(savedStudio => studio = savedStudio);
+    });
 
     const wonderWoman = {
         title: 'Wonder Woman',
@@ -58,7 +58,7 @@ describe('films REST api', () => {
     };
 
     function saveFilm(film) {
-        // film.studio = studio._id;
+        film.studio = studio._id;
         return request.post('/films')
             .send(film)
             .then(({ body }) => {
@@ -77,10 +77,16 @@ describe('films REST api', () => {
             });
     });
 
-    xit('GETs a film by id', () => {
+    it('GETs a film by id', () => {
         return request.get(`/films/${wonderWoman._id}`)
             .then(res => res.body)
-            .then(film => assert.deepEqual(film, wonderWoman));
+            .then(film => {
+                assert.equal(film.title, 'Wonder Woman');
+                assert.equal(film.released, wonderWoman.released);
+                assert.equal(film.studio.name, 'Warner Bros Studios');
+                assert.include(film.cast[0].actor, 'Gal Gadot');
+            
+            });
     });
 
     it('GETS all films', () => {

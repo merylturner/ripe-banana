@@ -18,10 +18,18 @@ describe('actors REST api', () => {
     before(() => connection.dropDatabase());
 
     // let film = null;
-
     // before(() => {
     //     return request.post('/films')
-    //         .send({title: 'Mean Girls'})
+    //         .send(
+    //             { title: 'Mean Girls' },
+    //             { studio: '123456789012345678901234' },
+    //             { released: 2001 },
+    //             { cast: [
+    //                 { role: 'Wonder Woman', actor: '857465768885558399423345' },
+    //                 { role: 'Steve Trevor', actor: '857465768885558399423345' },
+    //                 { role: 'Antiope', actor: '857465768885558399423345' }
+    //             ]}
+    //         )
     //         .then(res => res.body)
     //         .then(savedFilm => {
     //             console.log('saved film is', savedFilm);
@@ -67,7 +75,7 @@ describe('actors REST api', () => {
             });
     });
 
-    it.skip('gets an actor if they exist', () => {
+    xit('gets an actor if they exist', () => {
         return request
             .get(`/actors/${amyPoehler._id}`)
             .then(res => res.body)
@@ -109,6 +117,14 @@ describe('actors REST api', () => {
     it('returns 404 when deleting an actor that does not exist', () => {
         return request.delete('/actors/657483838485868788909878')
             .then(res => assert.deepEqual(res.body, { removed: false })
+            );
+    });
+
+    xit('will not delete actor who is in a film', () => {
+        return request.delete(`/actors/${amyPoehler._id}`)
+            .then(res => {
+                console.log('res after trying to delete', res);
+            }
             );
     });
 
