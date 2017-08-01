@@ -78,14 +78,14 @@ describe('studios REST api', () => {
 
     it.only('GET all Studios', () => {
         return Promise.all([
-            saveStudio(warner),
             saveStudio(fox),
+            saveStudio(universal),
         ])
             .then(() => request.get('/studios'))
             .then(res => {
                 const studios = res.body;
-                assert.equal(studios[2].name, warner.name);
-                assert.equal(studios[1].address, fox.address);
+                assert.equal(studios[2].name, universal.name);
+                assert.equal(studios[1].name, fox.name);
             });
     });
 
