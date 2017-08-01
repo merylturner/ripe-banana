@@ -14,6 +14,7 @@ describe('REST API for reviewers', () => {
 
     before(() => connection.dropDatabase());
 
+
     const siskel = {
         name: 'Siskel',
         company: 'Siskel Reviews'
@@ -48,8 +49,34 @@ describe('REST API for reviewers', () => {
                 assert.deepEqual(savedRev, siskel);
             });
     });
-    
+
+    function saveFilm(film) {
+        let batman = {
+            title: 'batman',
+            studio: studio._id,
+            released: 2017,
+            cast: [
+                { role: 'dude', actor: actor._id }
+            ]
+        };
+        return request.post('/films')
+            .send(film)
+            .then(({ body }) => {
+                film._id = body._id;
+                return body;
+            })
+            .then(savedFilm => film = savedFilm);
+    }
+    const review = {
+        rating: 2,
+        reviewer: siskel._id,
+        review: 'blah blah blah',
+        film: film._id
+    };
+
     it('GETs a reviewer if exists', () => {
+        saveFilm(batman);
+
         return request.get(`/reviewers/${siskel._id}`)
             .then(res => res.body)
             .then(reviewer => {
@@ -63,10 +90,10 @@ describe('REST API for reviewers', () => {
     it('returns 404 if tries to GET reviewer that does not exist', () => {
         return request.get('/reviewers/123412345567898765466676')
             .then(() => { throw new Error('received 200 code when expected 404'); },
-                ({ response }) => {
-                    assert.ok(response.notFound);
-                    assert.ok(response.error);
-                }
+            ({ response }) => {
+                assert.ok(response.notFound);
+                assert.ok(response.error);
+            }
             );
     });
 
@@ -77,8 +104,8 @@ describe('REST API for reviewers', () => {
         ])
             .then(res => {
                 const reviewers = res.sort((a, b) => {
-                    if(a.name > b.name) return 1;
-                    else if(a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    else if (a.name < b.name) return -1;
                     else return 0;
                 });
                 assert.deepEqual(reviewers, [ebert, nice]);

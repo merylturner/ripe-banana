@@ -6,13 +6,19 @@ chai.use(chaiHttp);
 process.env.MONGODB_URL = 'mongodb://localhost:27017/bananas-test';
 require('../../lib/connect');
 
+// const beforeData = require('./_before');
 const connection = require('mongoose').connection;
 const app = require('../../lib/app');
 const request = chai.request(app);
 
 describe.only('REST API for reviews', () => {
-
+    
     before(() => connection.dropDatabase());
+
+    // before(() => beforeData.beforeSaveActor());
+    // before(() => beforeData.beforeSaveStudio());
+    // before(() => beforeData.beforeSaveFilm());
+    // before(() => beforeData.beforeSaveReviewer());
 
     let actor = null;
     let studio = null;
@@ -33,8 +39,6 @@ describe.only('REST API for reviews', () => {
             })
             .then(savedActor => actor = savedActor);
     });
-
-
 
     before(() => {
         studio = {
@@ -64,8 +68,6 @@ describe.only('REST API for reviews', () => {
             .then(savedReviewer => reviewer = savedReviewer);
     });
 
-
-
     before(() => {
         film = {
             title: 'batman',
@@ -84,6 +86,8 @@ describe.only('REST API for reviews', () => {
             .then(savedFilm => film = savedFilm);
     });
 
+    // let studio = beforeData.studio;
+    // console.log('studio is', studio);    
     let revThree = null;
 
     function saveReview(review) {
