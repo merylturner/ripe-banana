@@ -44,7 +44,7 @@ describe('studios REST api', () => {
                 return body
             });
     }
-    it.only('saves a studio', () => {
+    it('saves a studio', () => {
         return saveStudio(warner)
             .then(savedStudio => {
                 assert.ok(savedStudio._id);
@@ -54,7 +54,7 @@ describe('studios REST api', () => {
             });
     });
 
-    it.only('GETs a studio if it exists', () => {
+    it('GETs a studio if it exists', () => {
         return request.get(`/studios/${warner._id}`)
             .then(res => res.body)
             .then(studio => {
@@ -63,7 +63,7 @@ describe('studios REST api', () => {
             });
     });
 
-    it.only('returns 404 if otter does not exist', () => {
+    it('returns 404 if otter does not exist', () => {
         return request.get('/studios/58ff9f496aafd447111c29b5')
             .then(
             () => {
@@ -76,7 +76,7 @@ describe('studios REST api', () => {
             );
     });
 
-    it.only('GET all Studios', () => {
+    it('GET all Studios', () => {
         return Promise.all([
             saveStudio(fox),
             saveStudio(universal),
@@ -89,7 +89,7 @@ describe('studios REST api', () => {
             });
     });
 
-    it.only('Replaces studio content', () => {
+    it('Replaces studio content', () => {
         const marvel = {
             name: 'Marvel Studios',
             address: {
@@ -109,7 +109,7 @@ describe('studios REST api', () => {
             });
     });
 
-    it.only('deletes an studio by id', () => {
+    it('deletes an studio by id', () => {
         return request
             .delete(`/studios/${warner._id}`)
             .then(res => {

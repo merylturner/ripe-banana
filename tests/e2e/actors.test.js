@@ -117,11 +117,8 @@ describe('actors REST api', () => {
     });
 
     it('updates an existing actor by id', () => {
-        return request.put(`/actors/${amyPoehler._id}`)
+        return request.patch(`/actors/${amyPoehler._id}`)
             .send({ pob: 'New York City' })
-            .then(() => {
-                return request.get(`/actors/${amyPoehler._id}`);
-            })
             .then(res => {
                 const updatedActor = res.body;
                 assert.equal(updatedActor.pob, 'New York City');
