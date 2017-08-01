@@ -76,7 +76,7 @@ describe('studios REST api', () => {
             );
     });
 
-    it('GET all Studios', () => {
+    it.only('GET all Studios', () => {
         return Promise.all([
             saveStudio(warner),
             saveStudio(fox),
