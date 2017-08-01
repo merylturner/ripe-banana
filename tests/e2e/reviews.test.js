@@ -71,7 +71,16 @@ describe('REST API for reviews', () => {
                     else return 0;
                 });
                 assert.deepEqual(reviews, [revTwo, revThree]);
-                // assert.include(reviews, reviews['film.title']);
+            });
+    });
+
+    it('updates a review by id', () => {
+        return request.patch(`/reviews/${revThree._id}`)
+            .send({ rating: 5 })
+            .then( res => res.body)
+            .then(review => {
+                console.log('review is', review);
+                assert.equal(review.rating, 5);
             });
     });
 });
