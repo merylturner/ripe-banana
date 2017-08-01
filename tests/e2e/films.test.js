@@ -16,13 +16,13 @@ const request = chai.request(app);
 describe('films REST api', () => {
     before(() => connection.dropDatabase());
 
-    // before(() => {
-    //     return saveActor(george)
-    //         .then(savedActor => {
-    //             wonderWoman.cast[0].actor = savedActor._id;
-    //             console.log('george is: ', george._id, 'wonderWoman.cast etc is', wonderWoman.cast[0].actor);
-    //         });
-    // });
+    before(() => {
+        return saveActor(george)
+            .then(savedActor => {
+                wonderWoman.cast[0].actor = savedActor._id;
+                console.log('george is: ', george._id, 'wonderWoman.cast etc is', wonderWoman.cast[0].actor);
+            });
+    });
 
     let studio = null;
     before(() => {
@@ -41,11 +41,11 @@ describe('films REST api', () => {
         updatedAt: new Date
     };
 
-    // const george = {
-    //     name: 'George Clooney',
-    //     dob: new Date('1980, 4, 1'),
-    //     pob: 'Portland, OR'
-    // };
+    const george = {
+        name: 'George Clooney',
+        dob: new Date('1980, 4, 1'),
+        pob: 'Portland, OR'
+    };
 
     const wonderWoman = {
         title: 'Wonder Woman',
@@ -83,14 +83,14 @@ describe('films REST api', () => {
             });
     }
 
-    // function saveActor(actor) {
-    //     return request.post('/actors')
-    //         .send(actor)
-    //         .then(({ body }) => {
-    //             actor._id = body._id;
-    //             return body;
-    //         });
-    // }
+    function saveActor(actor) {
+        return request.post('/actors')
+            .send(actor)
+            .then(({ body }) => {
+                actor._id = body._id;
+                return body;
+            });
+    }
 
     it('saves a film', () => {
         return saveFilm(wonderWoman)
@@ -100,7 +100,7 @@ describe('films REST api', () => {
             });
     });
 
-    it('GETs a film by id', () => {
+    xit('GETs a film by id', () => {
         return request.get(`/films/${wonderWoman._id}`)
             .then(res => res.body)
             .then(film => {

@@ -48,22 +48,22 @@ describe('actors REST api', () => {
             { role: 'Antiope', actor: Actor._id }
         ]
     };
-    
-    let film = null;
-    before(() => {
-        return request.post('/films')
-            .send(
-            )
-            .then(res => res.body)
-            .then(savedFilm => {
-                console.log('saved film is', savedFilm);
-                film = savedFilm;
-            }); 
-    });
+
+    // let film = null;
+    // before(() => {
+    //     return request.post('/films')
+    //         .send(
+    //         )
+    //         .then(res => res.body)
+    //         .then(savedFilm => {
+    //             console.log('saved film is', savedFilm);
+    //             film = savedFilm;
+    //         }); 
+    // });
 
 
     function saveActor(actor) {
-        actor.film = film._id;
+        // actor.film = film._id;
         return request.post('/actors')
             .send(actor)
             .then(({ body }) => {
