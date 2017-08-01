@@ -80,4 +80,10 @@ describe('REST API for reviews', () => {
                 // assert.include(reviews, reviews['film.title']);
             });
     });
+
+    it('updates a review by id', () => {
+        return request.patch(`/reviews/${revThree._id}`)
+            .send({ rating: 1 })
+            .then(res => assert.equal(res.body.rating, 1));
+    });
 });
