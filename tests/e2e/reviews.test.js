@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 process.env.MONGODB_URL = 'mongodb://localhost:27017/bananas-test';
 require('../../lib/connect');
 
-// const beforeData = require('./_before');
+const beforeData = require('./_before');
 const connection = require('mongoose').connection;
 const app = require('../../lib/app');
 const request = chai.request(app);
@@ -15,79 +15,79 @@ describe.only('REST API for reviews', () => {
     
     before(() => connection.dropDatabase());
 
-    // before(() => beforeData.beforeSaveActor());
-    // before(() => beforeData.beforeSaveStudio());
-    // before(() => beforeData.beforeSaveFilm());
-    // before(() => beforeData.beforeSaveReviewer());
+    before(() => beforeData.beforeSaveActor());
+    before(() => beforeData.beforeSaveStudio());
+    before(() => beforeData.beforeSaveFilm());
+    before(() => beforeData.beforeSaveReviewer());
 
-    let actor = null;
-    let studio = null;
-    let film = null;
-    let reviewer = null;
+    // let actor = null;
+    // let studio = null;
+    // let film = null;
+    // let reviewer = null;
 
-    before(() => {
-        actor = {
-            name: 'meryl',
-            dob: '1990, 10,08',
-            pob: 'portland'
-        };
-        return request.post('/actors')
-            .send(actor)
-            .then(({ body }) => {
-                actor._id = body._id;
-                return body;
-            })
-            .then(savedActor => actor = savedActor);
-    });
+    // before(() => {
+    //     actor = {
+    //         name: 'meryl',
+    //         dob: '1990, 10,08',
+    //         pob: 'portland'
+    //     };
+    //     return request.post('/actors')
+    //         .send(actor)
+    //         .then(({ body }) => {
+    //             actor._id = body._id;
+    //             return body;
+    //         })
+    //         .then(savedActor => actor = savedActor);
+    // });
 
-    before(() => {
-        studio = {
-            name: 'cool studio'
-        };
-        return request.post('/studios')
-            .send(studio)
-            .then(({ body }) => {
-                studio._id = body._id;
-                console.log('studio id is', studio._id);
-                return body;
-            })
-            .then(savedStudio => studio = savedStudio);
-    });
+    // before(() => {
+    //     studio = {
+    //         name: 'cool studio'
+    //     };
+    //     return request.post('/studios')
+    //         .send(studio)
+    //         .then(({ body }) => {
+    //             studio._id = body._id;
+    //             console.log('studio id is', studio._id);
+    //             return body;
+    //         })
+    //         .then(savedStudio => studio = savedStudio);
+    // });
 
-    before(() => {
-        reviewer = {
-            name: 'joe schmoe',
-            company: 'joe company'
-        };
-        return request.post('/reviewers')
-            .send(reviewer)
-            .then(({ body }) => {
-                reviewer._id = body._id;
-                return body;
-            })
-            .then(savedReviewer => reviewer = savedReviewer);
-    });
+    // before(() => {
+    //     reviewer = {
+    //         name: 'joe schmoe',
+    //         company: 'joe company'
+    //     };
+    //     return request.post('/reviewers')
+    //         .send(reviewer)
+    //         .then(({ body }) => {
+    //             reviewer._id = body._id;
+    //             return body;
+    //         })
+    //         .then(savedReviewer => reviewer = savedReviewer);
+    // });
 
-    before(() => {
-        film = {
-            title: 'batman',
-            studio: studio._id,
-            released: 2017,
-            cast: [
-                { role: 'dude', actor: actor._id }
-            ]
-        };
-        return request.post('/films')
-            .send(film)
-            .then(({ body }) => {
-                film._id = body._id;
-                return body;
-            })
-            .then(savedFilm => film = savedFilm);
-    });
+    // before(() => {
+    //     film = {
+    //         title: 'batman',
+    //         studio: studio._id,
+    //         released: 2017,
+    //         cast: [
+    //             { role: 'dude', actor: actor._id }
+    //         ]
+    //     };
+    //     return request.post('/films')
+    //         .send(film)
+    //         .then(({ body }) => {
+    //             film._id = body._id;
+    //             return body;
+    //         })
+    //         .then(savedFilm => film = savedFilm);
+    // });
 
-    // let studio = beforeData.studio;
-    // console.log('studio is', studio);    
+    let studio = beforeData.studio;
+    console.log('studio is', studio);    
     let revThree = null;
 
     function saveReview(review) {
@@ -106,9 +106,9 @@ describe.only('REST API for reviews', () => {
     it('saves a review', () => {
         const revOne = {
             rating: 3,
-            reviewer: reviewer._id,
+            reviewer: beforeData.reviewer._id,
             review: 'It was okay. Could have been better. Oh well.',
-            film: film._id
+            film: beforeData.film._id
         };
         return saveReview(revOne)
             .then(savedRev => {
@@ -121,15 +121,15 @@ describe.only('REST API for reviews', () => {
 
         const revTwo = {
             rating: 4,
-            reviewer: reviewer._id,
+            reviewer: beforeData.reviewer._id,
             review: 'Yay!',
-            film: film._id
+            film: beforeData.film._id
         };
         revThree = {
             rating: 1,
-            reviewer: reviewer._id,
+            reviewer: beforeData.reviewer._id,
             review: 'Blarg.',
-            film: film._id
+            film: beforeData.film._id
         };
         return Promise.all([
             saveReview(revTwo),
