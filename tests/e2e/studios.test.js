@@ -100,7 +100,7 @@ describe('studios REST api', () => {
         };
 
         return request
-            .put(`/studios/${warner._id}`)
+            .patch(`/studios/${warner._id}`)
             .send(marvel)
             .then(res => res.body)
             .then(studio => {

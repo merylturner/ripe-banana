@@ -16,13 +16,13 @@ const request = chai.request(app);
 describe('films REST api', () => {
     before(() => connection.dropDatabase());
 
-    // let studio = null;
-    // before(() => {
-    //     return request.post('/studios')
-    //         .send({ name: 'Some Studio' })
-    //         .then(res => res.body)
-    //         .then(savedStudio => studio = savedStudio);
-    // });
+    let studio = null;
+    before(() => {
+        return request.post('/studios')
+            .send({ name: 'Some Studio' })
+            .then(res => res.body)
+            .then(savedStudio => studio = savedStudio);
+    });
 
     const wonderWoman = {
         title: 'Wonder Woman',
