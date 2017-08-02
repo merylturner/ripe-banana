@@ -6,13 +6,13 @@ chai.use(chaiHttp);
 const app = require('../../lib/app');
 const request = chai.request(app);
 
-let actor = {
+let meryl = {
     name: 'meryl',
     dob: '1990, 10, 08',
     pob: 'portland'
 };
 
-let studio = {
+let coolStudio = {
     name: 'cool studio'
 };
 
@@ -21,9 +21,9 @@ let joeReviewer = {
     company: 'joe company'
 };
 
-let film = {
+let batman = {
     title: 'batman',
-    studio: studio._id,
+    studio: coolStudio._id,
     released: 2017,
     // cast: [
     //     { role: 'dude', actor: actor._id }
@@ -34,11 +34,10 @@ let revOne = {
     rating: 3,
     reviewer: joeReviewer._id,
     review: 'It was okay. Could have been better. Oh well.',
-    film: film._id
+    film: batman._id
 };
 
-function saveActor() {
-
+function saveActor(actor = meryl) {
     return request.post('/actors')
         .send(actor)
         .then(({ body }) => {
@@ -48,12 +47,12 @@ function saveActor() {
         .then(savedActor => actor = savedActor);
 }
 
-function saveStudio() {
+function saveStudio(studio = coolStudio) {
     return request.post('/studios')
         .send(studio)
         .then(({ body }) => {
             studio._id = body._id;
-            film.studio = studio._id;
+            batman.studio = studio._id;
             return body;
         })
         .then(savedStudio => studio = savedStudio);
@@ -70,7 +69,7 @@ function saveReviewer(reviewer = joeReviewer) {
         .then(savedReviewer => reviewer = savedReviewer);
 }
 
-function saveFilm() {
+function saveFilm(film = batman) {
     return request.post('/films')
         .send(film)
         .then(({ body }) => {
@@ -99,9 +98,9 @@ module.exports = {
     saveReviewer,
     saveStudio,
     saveReview,
-    actor,
-    studio,
+    actor: meryl,
+    studio: coolStudio,
     reviewer: joeReviewer,
-    film,
+    film: batman,
     review: revOne
 };

@@ -15,6 +15,7 @@ describe('REST API for reviewers', () => {
 
     before(() => connection.dropDatabase());
 
+    let joeReviewer = beforeData.reviewer;
 
     const siskel = {
         name: 'Siskel',
@@ -32,21 +33,21 @@ describe('REST API for reviewers', () => {
     };
 
     it('saves a reviewer', () => {
-        return beforeData.saveReviewer(siskel)
+        return beforeData.saveReviewer(joeReviewer)
             .then(savedRev => {
                 siskel._id = savedRev._id;
                 assert.ok(savedRev._id);
-                assert.deepEqual(savedRev, siskel);
+                assert.deepEqual(savedRev, joeReviewer);
             });
     });
 
 
     it('GETs a reviewer if exists', () => {
-        return request.get(`/reviewers/${siskel._id}`)
+        return request.get(`/reviewers/${joeReviewer._id}`)
             .then(res => res.body)
             .then(reviewer => {
-                assert.deepEqual(reviewer.name, siskel.name);
-                assert.deepEqual(reviewer.company, siskel.company);
+                assert.deepEqual(reviewer.name, joeReviewer.name);
+                assert.deepEqual(reviewer.company, joeReviewer.company);
                 assert.ok(reviewer.reviews);
             }
             );

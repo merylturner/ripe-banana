@@ -11,7 +11,7 @@ const app = require('../../lib/app');
 const request = chai.request(app);
 
 describe('studios REST api', () => {
-    
+
     before(() => connection.dropDatabase());
 
     const warner = {
@@ -30,7 +30,7 @@ describe('studios REST api', () => {
             state: 'Maryland',
             country: 'USA'
         }
-    }
+    };
     const universal = {
         name: 'Universal Studios',
         address: {
@@ -38,7 +38,7 @@ describe('studios REST api', () => {
             state: 'Georgia',
             country: 'USA'
         }
-    }
+    };
 
     function saveStudio(studio) {
         return request.post('/studios')
@@ -47,14 +47,14 @@ describe('studios REST api', () => {
                 studio._id = body._id;
                 studio._v = body._v;
                 studio.name = body.name;
-                return body
+                return body;
             });
     }
     it('saves a studio', () => {
         return saveStudio(warner)
             .then(savedStudio => {
                 assert.ok(savedStudio._id);
-                assert.isOk(savedStudio.name)
+                assert.isOk(savedStudio.name);
                 assert.deepEqual(savedStudio.name, warner.name);
                 assert.deepEqual(savedStudio.address, warner.address);
             });
@@ -72,13 +72,13 @@ describe('studios REST api', () => {
     it('returns 404 if a studio does not exist', () => {
         return request.get('/studios/58ff9f496aafd447111c29b5')
             .then(
-            () => {
-                throw new Error('Unexpected Success In Error Test');
-            },
-            res => {
-                assert.equal(res.status, 404);
-                assert.equal(res.message, 'Not Found');
-            }
+                () => {
+                    throw new Error('Unexpected Success In Error Test');
+                },
+                res => {
+                    assert.equal(res.status, 404);
+                    assert.equal(res.message, 'Not Found');
+                }
             );
     });
 

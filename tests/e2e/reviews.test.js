@@ -19,27 +19,15 @@ describe('REST API for reviews', () => {
     before(() => beforeData.saveStudio());
     before(() => beforeData.saveFilm());
     before(() => beforeData.saveReviewer());
-    before(() => beforeData.saveReview());
 
     let revThree = null;
 
-    let revOne = beforeData.revOne;
-    
-    // function saveReview(review) {
-    //     return request.post('/reviews')
-    //         .send(review)
-    //         .then(({ body }) => {
-    //             review._id = body._id;
-    //             review.rating = body.rating;
-    //             review.reviewer = body.reviewer;
-    //             review.review = body.review;
-    //             review.film = body.film;
-    //             return review;
-    //         });
-    // }
+    let revOne = beforeData.review;
 
     it('saves a review', () => {
-        return beforeData.saveReview()
+        revOne.reviewer = beforeData.reviewer._id;
+        revOne.film = beforeData.film._id;
+        return beforeData.saveReview(revOne)
             .then(savedRev => {
                 assert.ok(savedRev._id);
                 assert.deepEqual(savedRev, revOne);
