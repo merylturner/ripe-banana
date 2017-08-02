@@ -16,7 +16,7 @@ let studio = {
     name: 'cool studio'
 };
 
-let reviewer = {
+let joeReviewer = {
     name: 'joe schmoe',
     company: 'joe company'
 };
@@ -30,7 +30,7 @@ let film = {
     // ]
 };
 
-function beforeSaveActor() {
+function saveActor() {
 
     return request.post('/actors')
         .send(actor)
@@ -41,7 +41,7 @@ function beforeSaveActor() {
         .then(savedActor => actor = savedActor);
 }
 
-function beforeSaveStudio() {
+function saveStudio() {
     return request.post('/studios')
         .send(studio)
         .then(({ body }) => {
@@ -52,18 +52,19 @@ function beforeSaveStudio() {
         .then(savedStudio => studio = savedStudio);
 }
 
-function beforeSaveReviewer() {
+function saveReviewer(reviewer = joeReviewer) {
 
     return request.post('/reviewers')
         .send(reviewer)
         .then(({ body }) => {
             reviewer._id = body._id;
+            reviewer.__v = body.__v;
             return body;
         })
         .then(savedReviewer => reviewer = savedReviewer);
 }
 
-function beforeSaveFilm() {
+function saveFilm() {
 
     return request.post('/films')
         .send(film)
@@ -75,12 +76,12 @@ function beforeSaveFilm() {
 }
 
 module.exports = {
-    beforeSaveActor,
-    beforeSaveFilm,
-    beforeSaveReviewer,
-    beforeSaveStudio,
+    saveActor,
+    saveFilm,
+    saveReviewer,
+    saveStudio,
     actor,
     studio,
-    reviewer,
+    reviewer: joeReviewer,
     film
 };

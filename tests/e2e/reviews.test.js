@@ -15,76 +15,10 @@ describe.only('REST API for reviews', () => {
     
     before(() => connection.dropDatabase());
 
-    before(() => beforeData.beforeSaveActor());
-    before(() => beforeData.beforeSaveStudio());
-    before(() => beforeData.beforeSaveFilm());
-    before(() => beforeData.beforeSaveReviewer());
-
-    // let actor = null;
-    // let studio = null;
-    // let film = null;
-    // let reviewer = null;
-
-    // before(() => {
-    //     actor = {
-    //         name: 'meryl',
-    //         dob: '1990, 10,08',
-    //         pob: 'portland'
-    //     };
-    //     return request.post('/actors')
-    //         .send(actor)
-    //         .then(({ body }) => {
-    //             actor._id = body._id;
-    //             return body;
-    //         })
-    //         .then(savedActor => actor = savedActor);
-    // });
-
-    // before(() => {
-    //     studio = {
-    //         name: 'cool studio'
-    //     };
-    //     return request.post('/studios')
-    //         .send(studio)
-    //         .then(({ body }) => {
-    //             studio._id = body._id;
-    //             console.log('studio id is', studio._id);
-    //             return body;
-    //         })
-    //         .then(savedStudio => studio = savedStudio);
-    // });
-
-    // before(() => {
-    //     reviewer = {
-    //         name: 'joe schmoe',
-    //         company: 'joe company'
-    //     };
-    //     return request.post('/reviewers')
-    //         .send(reviewer)
-    //         .then(({ body }) => {
-    //             reviewer._id = body._id;
-    //             return body;
-    //         })
-    //         .then(savedReviewer => reviewer = savedReviewer);
-    // });
-
-    // before(() => {
-    //     film = {
-    //         title: 'batman',
-    //         studio: studio._id,
-    //         released: 2017,
-    //         cast: [
-    //             { role: 'dude', actor: actor._id }
-    //         ]
-    //     };
-    //     return request.post('/films')
-    //         .send(film)
-    //         .then(({ body }) => {
-    //             film._id = body._id;
-    //             return body;
-    //         })
-    //         .then(savedFilm => film = savedFilm);
-    // });
+    before(() => beforeData.saveActor());
+    before(() => beforeData.saveStudio());
+    before(() => beforeData.saveFilm());
+    before(() => beforeData.saveReviewer());
 
     let studio = beforeData.studio;
     console.log('studio is', studio);    

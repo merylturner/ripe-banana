@@ -7,6 +7,7 @@ process.env.MONGODB_URL = 'mongodb://localhost:27017/bananas-test';
 require('../../lib/connect');
 
 const connection = require('mongoose').connection;
+const beforeData = require('./_before');
 const app = require('../../lib/app');
 const request = chai.request(app);
 
@@ -30,53 +31,17 @@ describe('REST API for reviewers', () => {
         company: 'Nice Reviews'
     };
 
-    function saveReviewer(reviewer) {
-        return request.post('/reviewers')
-            .send(reviewer)
-            .then(({ body }) => {
-                reviewer._id = body._id;
-                reviewer.__v = body.__v;
-                reviewer.name = body.name;
-                reviewer.company = body.company;
-                return reviewer;
-            });
-    }
-
     it('saves a reviewer', () => {
-        return saveReviewer(siskel)
+        return beforeData.saveReviewer(siskel)
             .then(savedRev => {
+                siskel._id = savedRev._id;
                 assert.ok(savedRev._id);
                 assert.deepEqual(savedRev, siskel);
             });
     });
 
-    function saveFilm(film) {
-        let batman = {
-            title: 'batman',
-            studio: studio._id,
-            released: 2017,
-            cast: [
-                { role: 'dude', actor: actor._id }
-            ]
-        };
-        return request.post('/films')
-            .send(film)
-            .then(({ body }) => {
-                film._id = body._id;
-                return body;
-            })
-            .then(savedFilm => film = savedFilm);
-    }
-    const review = {
-        rating: 2,
-        reviewer: siskel._id,
-        review: 'blah blah blah',
-        film: film._id
-    };
 
     it('GETs a reviewer if exists', () => {
-        saveFilm(batman);
-
         return request.get(`/reviewers/${siskel._id}`)
             .then(res => res.body)
             .then(reviewer => {
@@ -90,17 +55,17 @@ describe('REST API for reviewers', () => {
     it('returns 404 if tries to GET reviewer that does not exist', () => {
         return request.get('/reviewers/123412345567898765466676')
             .then(() => { throw new Error('received 200 code when expected 404'); },
-            ({ response }) => {
-                assert.ok(response.notFound);
-                assert.ok(response.error);
-            }
+                ({ response }) => {
+                    assert.ok(response.notFound);
+                    assert.ok(response.error);
+                }
             );
     });
 
     it('GETs all reviewers', () => {
         return Promise.all([
-            saveReviewer(ebert),
-            saveReviewer(nice),
+            beforeData.saveReviewer(ebert),
+            beforeData.saveReviewer(nice),
         ])
             .then(res => {
                 const reviewers = res.sort((a, b) => {
