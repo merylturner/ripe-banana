@@ -17,18 +17,6 @@ describe('actors REST api', () => {
 
     before(() => connection.dropDatabase());
 
-    // let film = null;
-
-    // before(() => {
-    //     return request.post('/films')
-    //         .send({title: 'Mean Girls'})
-    //         .then(res => res.body)
-    //         .then(savedFilm => {
-    //             console.log('saved film is', savedFilm);
-    //             film = savedFilm;
-    //         }); 
-    // });
-
     let amyPoehler = {
         name: 'Amy Poehler',
         dob: new Date(1971, 9, 16),

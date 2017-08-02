@@ -11,7 +11,7 @@ const connection = require('mongoose').connection;
 const app = require('../../lib/app');
 const request = chai.request(app);
 
-describe.only('REST API for reviews', () => {
+describe('REST API for reviews', () => {
     
     before(() => connection.dropDatabase());
 
@@ -19,32 +19,27 @@ describe.only('REST API for reviews', () => {
     before(() => beforeData.saveStudio());
     before(() => beforeData.saveFilm());
     before(() => beforeData.saveReviewer());
+    before(() => beforeData.saveReview());
 
-    let studio = beforeData.studio;
-    console.log('studio is', studio);    
     let revThree = null;
 
-    function saveReview(review) {
-        return request.post('/reviews')
-            .send(review)
-            .then(({ body }) => {
-                review._id = body._id;
-                review.rating = body.rating;
-                review.reviewer = body.reviewer;
-                review.review = body.review;
-                review.film = body.film;
-                return review;
-            });
-    }
+    let revOne = beforeData.revOne;
+    
+    // function saveReview(review) {
+    //     return request.post('/reviews')
+    //         .send(review)
+    //         .then(({ body }) => {
+    //             review._id = body._id;
+    //             review.rating = body.rating;
+    //             review.reviewer = body.reviewer;
+    //             review.review = body.review;
+    //             review.film = body.film;
+    //             return review;
+    //         });
+    // }
 
     it('saves a review', () => {
-        const revOne = {
-            rating: 3,
-            reviewer: beforeData.reviewer._id,
-            review: 'It was okay. Could have been better. Oh well.',
-            film: beforeData.film._id
-        };
-        return saveReview(revOne)
+        return beforeData.saveReview()
             .then(savedRev => {
                 assert.ok(savedRev._id);
                 assert.deepEqual(savedRev, revOne);
@@ -66,8 +61,8 @@ describe.only('REST API for reviews', () => {
             film: beforeData.film._id
         };
         return Promise.all([
-            saveReview(revTwo),
-            saveReview(revThree)
+            beforeData.saveReview(revTwo),
+            beforeData.saveReview(revThree)
         ])
             .then(res => {
                 const reviews = res.sort((a, b) => {
@@ -84,7 +79,6 @@ describe.only('REST API for reviews', () => {
             .send({ rating: 5 })
             .then(res => res.body)
             .then(review => {
-                console.log('review is', review);
                 assert.equal(review.rating, 5);
             });
     });

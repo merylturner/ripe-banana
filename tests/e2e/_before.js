@@ -30,6 +30,13 @@ let film = {
     // ]
 };
 
+let revOne = {
+    rating: 3,
+    reviewer: joeReviewer._id,
+    review: 'It was okay. Could have been better. Oh well.',
+    film: film._id
+};
+
 function saveActor() {
 
     return request.post('/actors')
@@ -53,7 +60,6 @@ function saveStudio() {
 }
 
 function saveReviewer(reviewer = joeReviewer) {
-
     return request.post('/reviewers')
         .send(reviewer)
         .then(({ body }) => {
@@ -65,7 +71,6 @@ function saveReviewer(reviewer = joeReviewer) {
 }
 
 function saveFilm() {
-
     return request.post('/films')
         .send(film)
         .then(({ body }) => {
@@ -75,13 +80,28 @@ function saveFilm() {
         .then(savedFilm => film = savedFilm);
 }
 
+function saveReview(review = revOne) {
+    return request.post('/reviews')
+        .send(review)
+        .then(({ body }) => {
+            review._id = body._id;
+            review.__v = body.__v;
+            review.createdAt = body.createdAt;
+            review.updatedAt = body.updatedAt;
+            return body;
+        })
+        .then(savedReview => review = savedReview);
+}
+
 module.exports = {
     saveActor,
     saveFilm,
     saveReviewer,
     saveStudio,
+    saveReview,
     actor,
     studio,
     reviewer: joeReviewer,
-    film
+    film,
+    review: revOne
 };
