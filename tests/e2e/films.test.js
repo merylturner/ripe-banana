@@ -9,12 +9,20 @@ require('../../lib/connect');
 
 const connection = require('mongoose').connection;
 
+const beforeData = require('./seedData');
 const app = require('../../lib/app');
 const request = chai.request(app);
 
 
 describe('films REST api', () => {
     before(() => connection.dropDatabase());
+
+    before(() => beforeData.saveActor());
+    before(() => beforeData.saveStudio());
+    before(() => beforeData.saveFilm());
+    before(() => beforeData.saveReviewer());
+
+    let batman = beforeData.batmanMovie;
 
     // let studio = null;
     // before(() => {
@@ -24,56 +32,56 @@ describe('films REST api', () => {
     //         .then(savedStudio => studio = savedStudio);
     // });
 
-    const wonderWoman = {
-        title: 'Wonder Woman',
-        studio: '857465768885558399423345',
-        released: 2017,
-        cast: [
-            { role: 'Wonder Woman', actor: '857465768885558399423345' },
-            { role: 'Steve Trevor', actor: '857465768885558399423345' },
-            { role: 'Antiope', actor: '857465768885558399423345' }
-        ]
-    };
+    // const wonderWoman = {
+    //     title: 'Wonder Woman',
+    //     studio: '857465768885558399423345',
+    //     released: 2017,
+    //     cast: [
+    //         { role: 'Wonder Woman', actor: '857465768885558399423345' },
+    //         { role: 'Steve Trevor', actor: '857465768885558399423345' },
+    //         { role: 'Antiope', actor: '857465768885558399423345' }
+    //     ]
+    // };
 
-    const spaceBalls = {
-        title: 'Space Balls',
-        studio: '857465768885558399423345',
-        released: 1980,
-        cast: [
-            { role: 'Yogurt', actor: '857465768885558399423345' },
-            { role: 'Dark Helmet', actor: '857465768885558399423345' },
-            { role: 'Barf', actor: '857465768885558399423345' }
-        ]
-    };
+    // const spaceBalls = {
+    //     title: 'Space Balls',
+    //     studio: '857465768885558399423345',
+    //     released: 1980,
+    //     cast: [
+    //         { role: 'Yogurt', actor: '857465768885558399423345' },
+    //         { role: 'Dark Helmet', actor: '857465768885558399423345' },
+    //         { role: 'Barf', actor: '857465768885558399423345' }
+    //     ]
+    // };
 
-    const princessBride = {
-        title: 'The Princess Bride',
-        studio: '657575758855775645354545',
-        released: 1985,
-        cast: [
-            { role: 'Wesley', actor: '857465768885558399423345' },
-            { role: 'Buttercup', actor: '857465768885558399423345' },
-            { role: 'Inigo', actor: '857465768885558399423345' }
-        ]
-    };
+    // const princessBride = {
+    //     title: 'The Princess Bride',
+    //     studio: '657575758855775645354545',
+    //     released: 1985,
+    //     cast: [
+    //         { role: 'Wesley', actor: '857465768885558399423345' },
+    //         { role: 'Buttercup', actor: '857465768885558399423345' },
+    //         { role: 'Inigo', actor: '857465768885558399423345' }
+    //     ]
+    // };
 
-    function saveFilm(film) {
-        // film.studio = studio._id;
-        return request.post('/films')
-            .send(film)
-            .then(({ body }) => {
-                film._id = body._id;
-                film.__v = body.__v;
-                film.cast = body.cast;
-                return body;
-            });
-    }
+    // function saveFilm(film) {
+    //     // film.studio = studio._id;
+    //     return request.post('/films')
+    //         .send(film)
+    //         .then(({ body }) => {
+    //             film._id = body._id;
+    //             film.__v = body.__v;
+    //             film.cast = body.cast;
+    //             return body;
+    //         });
+    // }
 
-    it('saves a film', () => {
-        return saveFilm(wonderWoman)
+    it.only('saves a film', () => {
+        return beforeData.saveFilm(batman)
             .then(savedFilm => {
                 assert.ok(savedFilm._id);
-                assert.deepEqual(savedFilm, wonderWoman);
+                assert.deepEqual(savedFilm, batman);
             });
     });
 

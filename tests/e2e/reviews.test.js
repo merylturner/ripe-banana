@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 process.env.MONGODB_URL = 'mongodb://localhost:27017/bananas-test';
 require('../../lib/connect');
 
-const beforeData = require('./_before');
+const beforeData = require('./seedData');
 const connection = require('mongoose').connection;
 const app = require('../../lib/app');
 const request = chai.request(app);
